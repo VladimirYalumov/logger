@@ -1,0 +1,52 @@
+run:
+  timeout: 1m
+  issues-exit-code: 1
+  tests: true
+
+output:
+  format: colored-line-number
+  print-issued-lines: true
+  print-linter-name: true
+
+linters-settings:
+  dupl:
+    threshold: 50
+  gocognit:
+    min-complexity: 10
+  goconst:
+    min-len: 2
+    min-occurrences: 2
+  golint:
+    min-confidence: 0
+  gosec:
+    excludes:
+      # _ instead of err checks
+      - G104
+  revive:
+    rules:
+      - name: unexported-return
+        disabled: true
+
+linters:
+  disable-all: true
+  enable:
+    - errcheck
+    - gocognit
+    - goconst
+    - goimports
+    - gosec
+    - govet
+    - ineffassign
+    - megacheck  # (gosimple + staticcheck + unused)
+    - revive
+    - typecheck
+    - unparam
+
+issues:
+  exclude-rules:
+    - path: '(.+)_test\.go'
+      linters:
+        - gocognit
+
+  exclude:
+    - Error return value of .((os\.)?std(out|err)\..*|.*Close|.*Flush|os\.Remove(All)?). is not checked
